@@ -10,6 +10,11 @@
     <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Permalink }}">
+
+    <!-- RSS Feed -->
+    {{ range .AlternativeOutputFormats -}}
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
+    {{- end }}
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
