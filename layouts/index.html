@@ -62,106 +62,29 @@
     </div>
 
     <!-- Categories Section -->
-    <div class="mb-8">
-        <h2 class="text-xl font-bold mb-4">Explorar por sección</h2>
-        <div id="categories-container" class="grid gap-3 md:grid-cols-5 grid-rows-1">
-            {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
-            <a href="/categories/{{ $name | urlize }}" class="category-item bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow hidden">
-                <h3 class="text-sm font-semibold text-gray-900">{{ $name }}</h3>
-                <p class="text-gray-500 text-xs">{{ len $taxonomy }} {{ if eq (len $taxonomy) 1 }}artículo{{ else }}artículos{{ end }}</p>
-            </a>
-            {{ end }}
-        </div>
-        <div class="flex justify-center items-center gap-4 mt-3">
-            <button id="prev-categories" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                ← Anterior
-            </button>
-            <span id="category-page-info" class="text-gray-500 text-sm"></span>
-            <button id="next-categories" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                Siguiente →
-            </button>
-        </div>
+    <div class="mb-8 border-t border-gray-200 pt-6">
+        <span class="text-xs font-semibold uppercase tracking-widest text-gray-400 mr-4">Explorar por sección</span>
+        {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+        <a href="/categories/{{ $name | urlize }}" class="inline-block mr-4 text-sm text-gray-700 hover:text-blue-600 font-medium">{{ $name }}</a>
+        {{ end }}
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoriesPerPage = 5; // 5 columns × 1 row
-            const categoryItems = document.querySelectorAll('.category-item');
-            const totalPages = Math.ceil(categoryItems.length / categoriesPerPage);
-            let currentPage = 1;
-
-            const prevButton = document.getElementById('prev-categories');
-            const nextButton = document.getElementById('next-categories');
-            const pageInfo = document.getElementById('category-page-info');
-
-            function updateCategories() {
-                categoryItems.forEach((item, index) => {
-                    const startIndex = (currentPage - 1) * categoriesPerPage;
-                    const endIndex = startIndex + categoriesPerPage;
-                    if (index >= startIndex && index < endIndex) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
-
-                prevButton.disabled = currentPage === 1;
-                nextButton.disabled = currentPage === totalPages;
-                pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-            }
-
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    updateCategories();
-                }
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updateCategories();
-                }
-            });
-
-            // Initial update
-            updateCategories();
-        });
-    </script>
 
     <!-- Authors Section -->
-    <div class="mb-8">
-        <h2 class="text-xl font-bold mb-4">Nuestros autores</h2>
-        <div class="grid gap-3 md:grid-cols-4">
-            {{ $authors := slice }}
-            {{ range (where .Site.RegularPages "Kind" "page") }}
-                {{ $authors = $authors | append .Params.author }}
-            {{ end }}
-            {{ range ($authors | uniq) }}
-            {{ $author := . }}
-            {{ $authorPosts := (where $.Site.RegularPages "Params.author" .) }}
-            {{ $authorPage := $.Site.GetPage (printf "/authors/%s" (replace (lower .) "." "" | urlize)) }}
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden flex items-center gap-3 p-3">
-                {{ with $authorPage }}
-                    {{ with .Resources.GetMatch .Params.featured_image }}
-                    <img src="{{ .RelPermalink }}" alt="{{ $author }}" class="w-10 h-10 rounded-full object-cover flex-shrink-0">
-                    {{ end }}
-                {{ end }}
-                <div class="min-w-0">
-                    <h3 class="text-sm font-semibold truncate">
-                        <a href="/authors/{{ replace (lower $author) "." "" | urlize }}" class="text-blue-600 hover:text-blue-800">{{ $author }}</a>
-                    </h3>
-                    {{ with $authorPage }}
-                        {{ with .Params.role }}
-                        <p class="text-gray-500 text-xs truncate">{{ . }}</p>
-                        {{ end }}
-                    {{ end }}
-                    <p class="text-gray-400 text-xs">{{ len $authorPosts }} {{ if eq (len $authorPosts) 1 }}artículo{{ else }}artículos{{ end }}</p>
-                </div>
-            </div>
-            {{ end }}
-        </div>
+    {{ $authors := slice }}
+    {{ range (where .Site.RegularPages "Kind" "page") }}
+        {{ $authors = $authors | append .Params.author }}
+    {{ end }}
+    {{ $authors = $authors | uniq }}
+    {{ if gt (len $authors) 0 }}
+    <div class="mb-8 border-t border-gray-200 pt-6">
+        <span class="text-xs font-semibold uppercase tracking-widest text-gray-400 mr-4">Nuestros autores</span>
+        {{ range $authors }}
+        {{ if . }}
+        <a href="/authors/{{ replace (lower .) "." "" | urlize }}" class="inline-block mr-4 text-sm text-gray-700 hover:text-blue-600 font-medium">{{ . }}</a>
+        {{ end }}
+        {{ end }}
     </div>
+    {{ end }}
 
     <!-- View All Articles Link -->
     <div class="text-center">
