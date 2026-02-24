@@ -29,7 +29,7 @@
 
             {{ with .Params.expertise }}
             <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Areas of Expertise</h2>
+                <h2 class="text-2xl font-bold mb-4">Áreas de especialización</h2>
                 <div class="flex flex-wrap gap-2">
                     {{ range . }}
                     <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">{{ . }}</span>
@@ -40,7 +40,7 @@
 
             {{ with .Params.education }}
             <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Education</h2>
+                <h2 class="text-2xl font-bold mb-4">Formación</h2>
                 <ul class="list-disc list-inside space-y-2">
                     {{ range . }}
                     <li class="text-gray-700">{{ . }}</li>
@@ -50,7 +50,7 @@
             {{ end }}
 
             <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">Recent Articles</h2>
+                <h2 class="text-2xl font-bold mb-4">Artículos recientes</h2>
                 <div class="space-y-4">
                     {{ $authorPosts := where .Site.RegularPages "Params.author" .Title }}
                     {{ range $authorPosts }}
@@ -80,7 +80,7 @@
 
             {{ with .Params.social }}
             <div>
-                <h2 class="text-2xl font-bold mb-4">Follow {{ $.Title }}</h2>
+                <h2 class="text-2xl font-bold mb-4">Seguir a {{ $.Title }}</h2>
                 <div class="flex gap-4">
                     {{ with .twitter }}
                     <a href="https://twitter.com/{{ . }}" target="_blank" rel="noopener noreferrer" 
