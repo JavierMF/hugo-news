@@ -1,6 +1,6 @@
 {
     "items": [
-        {{- $regularPages := where .Site.RegularPages "Type" "articles" -}}
+        {{- $regularPages := where (where .Site.RegularPages "Kind" "page") "Section" "!=" "" -}}
         {{- $authorPages := .Site.GetPage "taxonomyTerm" "authors" -}}
         {{- $authors := $authorPages.Pages -}}
         {{- $allPages := union $regularPages $authors -}}

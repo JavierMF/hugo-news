@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="max-w-7xl mx-auto">
     <!-- Featured Article -->
-    {{ $featured := index (where .Site.RegularPages "Kind" "page") 0 }}
+    {{ $featured := index (where (where .Site.RegularPages "Kind" "page") "Section" "!=" "") 0 }}
     {{ with $featured }}
     <article class="bg-white rounded-lg shadow-lg overflow-hidden mb-12">
         <div class="md:flex">
@@ -33,7 +33,7 @@
     <div class="mb-12">
         <h2 class="text-3xl font-bold mb-8">Artículos recientes</h2>
         <div class="grid gap-8 md:grid-cols-3">
-            {{ range first 6 (after 1 (where .Site.RegularPages "Kind" "page")) }}
+            {{ range first 6 (after 1 (where (where .Site.RegularPages "Kind" "page") "Section" "!=" "")) }}
             <article class="bg-white rounded-lg shadow-md overflow-hidden">
                 {{ with .Resources.GetMatch .Params.featured_image }}
                 <img src="{{ .RelPermalink }}" alt="{{ $.Title }}" class="w-full h-48 object-cover">
@@ -69,7 +69,7 @@
 
     <!-- Authors Section -->
     {{ $authors := slice }}
-    {{ range (where .Site.RegularPages "Kind" "page") }}
+    {{ range (where (where .Site.RegularPages "Kind" "page") "Section" "!=" "") }}
         {{ $authors = $authors | append .Params.author }}
     {{ end }}
     {{ $authors = $authors | uniq }}
